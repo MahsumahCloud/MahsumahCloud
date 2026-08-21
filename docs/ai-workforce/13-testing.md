@@ -1,15 +1,19 @@
 # 13 — Testing Report
 
 **Run date:** 2026-08-21
-**Command:** `node --test 'src/ai-workforce/test/*.test.ts'`
-**Runtime:** Node v22.22.2, native TypeScript type-stripping, zero dependencies, no network.
+**Command:** `npm test`
+**Runtime:** Node >=22.6, TypeScript type-stripping, zero dependencies, no network.
+
+> Node 22.18+ strips types by default. On 22.6-22.17 the `--experimental-strip-types` flag is
+> required, which is why `npm test` carries it - running bare `node --test` on Node 22.12 fails
+> with `ERR_UNKNOWN_FILE_EXTENSION`. Use `npm test` and the flag is handled for you.
 
 ```
-# tests 38
-# suites 8
-# pass 38
+# tests 74
+# suites 13
+# pass 74
 # fail 0
-# duration_ms 261
+# duration_ms 341
 ```
 
 Every test below was executed. Nothing is aspirational; nothing is skipped or marked todo.
@@ -142,13 +146,13 @@ Reported honestly per §91. These are blocked by the external dependencies in
 
 | Category | Status | Reason |
 |---|---|---|
-| Integration tests | **NOT RUN** | No integrations exist (Blocker 2: no credentials) |
-| E2E tests (§68–§72) | **NOT RUN** | Requires agents, runtime and a platform — none exist |
+| Integration tests (real adapters) | **NOT RUN** | No adapter exists (Blocker 2: no credentials) |
+| E2E §69–§72 | **NOT RUN** | Customer Ops / Sales / Marketing / Finance agents do not exist |
 | Browser QA (§76) | **NOT RUN** | Egress to `cloud.mahsumaah.sa` denied (Blocker 3) |
 | Regression (§77) | **NOT APPLICABLE** | No pre-existing platform functionality to regress |
-| Agent failure test (§73) | **NOT RUN** | No agent runtime or heartbeat implemented |
+| Agent failure test (§73) | **PASS** | Heartbeat staleness, degradation and recovery tested |
 | AI provider outage test (§74) | **NOT RUN** | No AI provider gateway implemented |
-| Integration failure test (§75) | **NOT RUN** | No adapters implemented |
+| Integration failure test (§75) | **PASS WITH LIMITATION** | Failure path tested via port test-double; no real adapter exists |
 
 **IDOR testing (§56)** is partially covered: cross-tenant object access is tested at the policy
 and scope layers, but there is no HTTP API, so endpoint-level IDOR remains untested.
@@ -158,7 +162,14 @@ and scope layers, but there is no HTTP API, so endpoint-level IDOR remains untes
 ## 4. Reproducing
 
 ```bash
-node --test 'src/ai-workforce/test/*.test.ts'
+npm test
 ```
 
-No install step. No network. No environment variables. No fixtures.
+No install step (there are no dependencies to install). No network. No environment
+variables. No fixtures.
+
+If you prefer to invoke Node directly, include the flag on Node below 22.18:
+
+```bash
+node --experimental-strip-types --test 'src/ai-workforce/test/*.test.ts'
+```
