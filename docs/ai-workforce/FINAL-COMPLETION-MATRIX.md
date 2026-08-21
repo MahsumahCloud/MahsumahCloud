@@ -6,9 +6,10 @@
 Evidence cites a real file, test name, or command output. Nothing is fabricated (§89).
 Where a capability does not exist, the row says `BLOCKED` — not a softer word.
 
-**Headline:** the shared safety core, the runtime and the Cloud Operations agent are built and
-proven end to end. **No integration adapter, UI, API or persistence exists**, and six of the
-seven agents are not built. The program is not complete and no autonomy may be enabled (§78).
+**Headline:** the shared safety core, the runtime and **all seven agents** are built and proven
+by execution — 122 tests. **No real integration adapter, UI, API or persistence exists**: every
+agent runs against a port, not a live system. The program is not complete and no autonomy may
+be enabled (§78).
 
 ---
 
@@ -62,18 +63,18 @@ No adapter was stubbed. §64 and §85 make an unverifiable connector worse than 
 | ID | Agent | Status | Evidence | Notes |
 |---|---|---|---|---|
 | A1 | Cloud Operations | PASS WITH LIMITATION | `src/ai-workforce/agents/cloud-ops.ts` | Agent logic complete and E2E tested (11 tests); **no real infrastructure adapter** — runs against the port, blocked on credentials |
-| A2 | Security | BLOCKED | Actions declared | No signal sources |
-| A3 | Customer Operations | BLOCKED | Actions declared | No ticket/customer model |
-| A4 | Sales | BLOCKED | Actions declared | No CRM |
-| A5 | Marketing | BLOCKED | Actions declared | No channel integrations |
-| A6 | Finance Operations | BLOCKED | Actions declared | No invoice/subscription data |
-| A7 | CEO Command | BLOCKED | Action declared | Consumes other agents; none exist |
+| A2 | Security | PASS WITH LIMITATION | `agents/security.ts` | Correlation, classification and containment *recommendations*; 8 tests. No signal adapter |
+| A3 | Customer Operations | PASS WITH LIMITATION | `agents/customer-ops.ts` | Classification, SLA, tenant-scoped context, drafts; 11 tests. No helpdesk adapter |
+| A4 | Sales | PASS WITH LIMITATION | `agents/sales.ts` | Qualification, scoring, service matching, drafts; 8 tests. No CRM adapter |
+| A5 | Marketing | PASS WITH LIMITATION | `agents/marketing.ts` | Brief validation, composition, approval gate; 5 tests. No channel adapter |
+| A6 | Finance Operations | PASS WITH LIMITATION | `agents/finance.ts` | Overdue, renewals, integer-money metrics; 8 tests. No billing adapter |
+| A7 | CEO Command | PASS WITH LIMITATION | `agents/ceo-command.ts` | Daily brief, decisions-needed ranking; 8 tests. Absent sources report UNAVAILABLE |
 | A8 | Incident engine (§25) | PASS WITH LIMITATION | `core/incident.ts` | Lifecycle, dedup, MTTR tested; in-memory only |
 | A9 | Severity model (§26) | PASS | `computeSeverity()` | 8 tests; deterministic, no LLM |
 
-Declaring an action is **not** implementing an agent (§85). A2–A7 are `BLOCKED`, not partial.
-A1 is `PASS WITH LIMITATION` because its orchestration is complete and tested end to end, but
-it runs against the integration port — no real infrastructure adapter exists behind it.
+Every agent is `PASS WITH LIMITATION`, never `PASS`: the orchestration is complete and tested
+end to end, but each runs against an integration **port** with no real adapter behind it. An
+agent is not in production until an adapter exists and Gate 1 passes.
 
 ---
 
@@ -106,7 +107,7 @@ it runs against the integration port — no real infrastructure adapter exists b
 
 | ID | Category | Status | Evidence |
 |---|---|---|---|
-| T1 | Unit / security tests | PASS | **74 passed, 0 failed** — `13-testing.md` |
+| T1 | Unit / security tests | PASS | **122 passed, 0 failed** — `13-testing.md` |
 | T2 | Tenant isolation tests | PASS | 4 tests, all pass |
 | T3 | RBAC tests | PASS WITH LIMITATION | Approver authorisation tested; platform RBAC absent |
 | T4 | P4 blocking tests | PASS | 5 tests, all pass |
@@ -114,7 +115,7 @@ it runs against the integration port — no real infrastructure adapter exists b
 | T6 | Secret exposure tests | PASS | Redaction verified incl. nested |
 | T7 | Integration tests | BLOCKED | No integrations |
 | T8 | E2E Cloud Ops (§68) | PASS | 11 tests: detect → incident → approval → verified action → resolved |
-| T8b | E2E §69–§72 | BLOCKED | Customer Ops / Sales / Marketing / Finance agents do not exist |
+| T8b | E2E §69–§72 | PASS WITH LIMITATION | Customer Ops, Sales, Marketing and Finance flows tested against ports, not live systems |
 | T9 | Browser QA (§76) | BLOCKED | Egress denied (Blocker 3) |
 | T10 | Regression (§77) | NOT APPLICABLE | No prior functionality |
 | T11 | Endpoint IDOR (§56) | BLOCKED | No HTTP layer exists |

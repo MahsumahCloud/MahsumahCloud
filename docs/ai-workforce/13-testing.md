@@ -9,11 +9,10 @@
 > with `ERR_UNKNOWN_FILE_EXTENSION`. Use `npm test` and the flag is handled for you.
 
 ```
-# tests 74
-# suites 13
-# pass 74
+# tests 122
+# suites 19
+# pass 122
 # fail 0
-# duration_ms 341
 ```
 
 Every test below was executed. Nothing is aspirational; nothing is skipped or marked todo.
@@ -95,6 +94,17 @@ The seven P4 actions asserted: `cloud_ops.delete_server`, `cloud_ops.delete_back
 | every denied action is attributable at a point in time | §95 Q6 |
 | an approved action records who approved it | §95 Q7 |
 
+### Business agents (48/48 pass)
+
+| Agent | Tests | What is proven |
+|---|---|---|
+| Security | 8 | Brute-force and impossible-travel correlation; a success after failures escalates to CRITICAL; recommends containment, never contains; a dead signal source fails loudly rather than reporting "no threats" |
+| Customer Ops | 11 | Deterministic classification; SLA clock stops at first response; **another tenant's incidents are never visible**; drafts never claim an incident that does not exist; sending requires a scoped approval |
+| Sales | 8 | Missing facts reported, never guessed; only catalogue services recommended; a generic term cannot shadow a specific one; drafts carry no pricing; **no send capability exists in the catalogue at all** |
+| Marketing | 5 | An incomplete brief is rejected, not auto-completed; a disconnected channel is skipped rather than queued; content fits the channel limit at a word boundary; publishing never happens in a sweep |
+| Finance | 8 | Integer minor units; mixed currencies return null rather than a wrong total; metrics are tenant scoped; transfers are structurally impossible; no suspend capability exists |
+| CEO Command | 8 | Absent sources report UNAVAILABLE with a reason; decisions ranked most urgent first; a quiet platform needs no decisions; the rendered brief never prints an estimate |
+
 ### §79 — Catalogue integrity (5/5 pass)
 
 | Test | Control |
@@ -150,7 +160,7 @@ Reported honestly per §91. These are blocked by the external dependencies in
 | E2E §69–§72 | **NOT RUN** | Customer Ops / Sales / Marketing / Finance agents do not exist |
 | Browser QA (§76) | **NOT RUN** | Egress to `cloud.mahsumaah.sa` denied (Blocker 3) |
 | Regression (§77) | **NOT APPLICABLE** | No pre-existing platform functionality to regress |
-| Agent failure test (§73) | **PASS** | Heartbeat staleness, degradation and recovery tested |
+| Agent failure test (§73) | **PASS** | Heartbeat staleness, degradation and recovery tested; every agent marks its own heartbeat on failure |
 | AI provider outage test (§74) | **NOT RUN** | No AI provider gateway implemented |
 | Integration failure test (§75) | **PASS WITH LIMITATION** | Failure path tested via port test-double; no real adapter exists |
 
