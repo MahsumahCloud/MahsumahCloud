@@ -1,0 +1,14 @@
+{
+  "name": "mahsumah-ai-workforce",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mahsumah Cloud AI Workforce - shared safety core, runtime and agents",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test 'src/ai-workforce/test/*.test.ts'",
+    "test:security": "node --experimental-strip-types --test 'src/ai-workforce/test/security.test.ts'"
+  }
+}
